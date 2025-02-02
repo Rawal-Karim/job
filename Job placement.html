@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Job Placement Probability Calculator</title>
+<style>
+body {
+  font-family: sans-serif;
+}
+#calculator {
+  width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+input[type="number"],
+select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+}
+#results {
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+</style>
+</head>
+<body>
+
+<h1>Job Placement Probability Calculator</h1>
+
+<div id="calculator">
+  <label for="cgpa">CGPA:</label>
+  <select id="cgpa">
+    <option value="4">3.5 - 4.0</option>
+    <option value="3">3.0 - 3.49</option>
+    <option value="2">2.5 - 2.99</option>
+    <option value="1">Below 2.5</option>
+  </select>
+
+  <label for="ssc">SSC Score (%):</label>
+  <select id="ssc">
+    <option value="4">90 and above</option>
+    <option value="3">80 - 89</option>
+    <option value="2">70 - 79</option>
+    <option value="1">Below 70</option>
+  </select>
+
+  <label for="hsc">HSC Score (%):</label>
+  <select id="hsc">
+    <option value="4">90 and above</option>
+    <option value="3">80 - 89</option>
+    <option value="2">70 - 79</option>
+    <option value="1">Below 70</option>
+  </select>
+
+  <label for="internships">Number of Internships:</label>
+  <select id="internships">
+    <option value="4">3 or more</option>
+    <option value="3">2</option>
+    <option value="2">1</option>
+    <option value="1">0</option>
+  </select>
+
+    <label for="training">Training:</label>
+    <select id="training">
+        <option value="4">Multiple relevant trainings/certifications</option>
+        <option value="3">One relevant training/certification</option>
+        <option value="1">No relevant training</option>
+    </select>
+
+
+  <button onclick="calculate()">Calculate</button>
+
+  <div id="results">
+    <h2>Results</h2>
+    <p id="placementScore"></p>
+    <p id="interpretation"></p>
+  </div>
+</div>
+
+<script>
+function calculate() {
+  const cgpa = parseInt(document.getElementById("cgpa").value);
+  const ssc = parseInt(document.getElementById("ssc").value);
+  const hsc = parseInt(document.getElementById("hsc").value);
+  const internships = parseInt(document.getElementById("internships").value);
+    const training = parseInt(document.getElementById("training").value);
+
+  // Example weights (ADJUST THESE):
+  const weights = {
+    cgpa: 0.15,
+    ssc_score: 0.05,
+    hsc_score: 0.05,
+    internships: 0.10,
+      training: 0.05,
+  };
+
+  const answers = {
+    cgpa: cgpa,
+    ssc_score: ssc,
+    hsc_score: hsc,
+    internships: internships,
+      training: training,
+  };
+
+  let placementScore = 0;
+  for (const factor in answers) {
+    placementScore += answers[factor] * weights[factor];
+  }
+
+  // Example Max Possible score calculation (ADJUST with ALL your factors and weights)
+    let maxPossibleScore = 0;
+    maxPossibleScore += 4 * weights.cgpa;
+    maxPossibleScore += 4 * weights.ssc_score;
+    maxPossibleScore += 4 * weights.hsc_score;
+    maxPossibleScore += 4 * weights.internships;
+    maxPossibleScore += 4 * weights.training;
+
+
+  const placementPercentage = (placementScore / maxPossibleScore) * 100;
+
+  document.getElementById("placementScore").textContent = "Placement Score: " + placementScore.toFixed(2);
+
+  let interpretation = "";
+  if (placementPercentage >= 70) {
+    interpretation = `You have a strong placement potential (${placementPercentage.toFixed(1)}%). Your qualifications and experience align well with typical job requirements. Focus on refining your interview skills and networking to maximize your chances.`;
+  } else if (placementPercentage >= 50) {
+    interpretation = `You have a moderate placement potential (${placementPercentage.toFixed(1)}%). You have some good qualifications, but there may be areas where you can improve. Consider gaining more experience (internships, projects), enhancing your skills, or pursuing relevant training. Targeted networking and a well-crafted resume will be important.`;
+  } else {
+    interpretation = `You have a lower placement potential (${placementPercentage.toFixed(1)}%). Focus on building your skills and experience in the areas most relevant to your desired career path. Consider internships, volunteer work, or entry-level positions to gain practical experience. Seek guidance from career counselors or mentors.`;
+  }
+  document.getElementById("interpretation").textContent = interpretation;
+}
+</script>
+
+</body>
+</html>
